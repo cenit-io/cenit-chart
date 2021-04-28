@@ -1,0 +1,13 @@
+apiVersion: v2
+name: cenit
+description: Is a 100% open integration Platform (iPaaS) that's modern, powerful, yet hackable to the core, ready to use in the cloud https://cenit.io or on-premises. It is designed to solve unique integrations needs, orchestrate data flows that may involve types of protocols and data formats, and provide API management capabilities. All of which can support a wide range of integration use cases. It is particular valuable to embrace a pervasive integration approach.
+type: application
+version: 0.1.0
+appVersion: "1.16.0"
+home: https://cenit.io/
+sources:
+- https://github.com/cenit-io/cenit
+maintainers:
+  - name: Alejandro Roble Gutierrez
+    email: arobleg@gmail.com
+icon: https://cenit.io/assets/cenit-logo-c4e099552f7dc77c1870b7c77600380177da8b01c0a4a70dbf608b73e61da3ce.png
