@@ -34,7 +34,7 @@ spec:
         image: rabbitmq:management
         resources:
           limits:
-            memory: "1Gi"
+            memory: "500m"
             cpu: "350m"
         env:
           - name: RABBITMQ_DEFAULT_PASS
@@ -59,7 +59,7 @@ metadata:
 spec:
   type: ClusterIP
   selector:
-    amqp: rabbitmq
+    amqp: {{ template "cenit.fullname" . }}-rabbitmq
   ports:
   - name: consumers-port
     port: 5672

@@ -33,7 +33,7 @@ spec:
           - name: LOAD_DELAYED_MESSAGES_ON_START
             value: "true"
           - name: REDIS_HOST
-            value: redis-cluster-ip-service
+            value: {{ template "cenit.fullname" . }}-redis-svc
           - name: RABBITMQ_BIGWIG_TX_URL
             value: "amqp://cenit_test:cenit_test@{{ template "cenit.fullname" . }}-svc/vhost_cenit"
           - name: MONGODB_URI
