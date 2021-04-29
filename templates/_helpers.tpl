@@ -60,3 +60,8 @@ Create the name of the service account to use
 {{- default "default" .Values.serviceAccount.name }}
 {{- end }}
 {{- end }}
+
+
+{{- define "mongodb.fullname" -}}
+{{- printf "%s-mongodb" .Release.Name | replace "+" "_" | trunc 63 | trimSuffix "-" }}
+{{- end }}

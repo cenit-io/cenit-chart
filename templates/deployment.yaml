@@ -1,0 +1,89 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: {{ template "cenit.name" . }}-deployment-backend
+spec:
+  replicas: {{ default 1 .Values.backendReplicas }}
+  selector:
+    matchLabels:
+      platform: {{ template "cenit.name" . }}-backend
+  template:
+    metadata:
+      labels:
+        platform: {{ template "cenit.name" . }}-backend
+    spec:
+      containers:
+      - name: {{ template "cenit.name" . }}-backend
+        image: cenitgroup/cenitio:backend
+        imagePullPolicy: Always
+        resources:
+          limits:
+            memory: "1Gi"
+            cpu: "1000m"
+        command: ["bundle", "exec", "unicorn", "-c", "config/unicorn.rb"]
+        env:
+          - name: SCHEDULER_LOOKUP_INTERVAL
+            value: "4"
+          - name: UNICORN_WORKERS
+            value: "2"
+          - name: MAXIMUM_UNICORN_CONSUMERS
+            value: "2"
+          - name: LOOKUP_SCHEDULER_OFF
+            value: "false"
+          - name: LOAD_DELAYED_MESSAGES_ON_START
+            value: "true"
+          - name: REDIS_HOST
+            value: redis-cluster-ip-service
+          - name: RABBITMQ_BIGWIG_TX_URL
+            value: "amqp://cenit_test:cenit_test@rabbitmq-cluster-ip-service/vhost_cenit"
+          - name: MONGODB_URI
+            value: mongodb://mongo-cluster-ip-service/cenit
+
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: {{ template "cenit.name" . }}-deployment-frontend
+spec:
+  replicas: {{ default 1 .Values.backendReplicas }}
+  selector:
+    matchLabels:
+      platform: {{ template "cenit.name" . }}-frontend
+  template:
+    metadata:
+      labels:
+        platform: {{ template "cenit.name" . }}-frontend
+    spec:  
+      containers:
+      - name: {{ template "cenit.name" . }}-frontend
+        image: cenitgroup/cenitio:frontend
+        imagePullPolicy: Always
+        resources:
+          limits:
+            memory: "1Gi"
+            cpu: "1000m"
+        command: ["bundle", "exec", "unicorn", "-c", "config/unicorn.rb"]
+        env:
+          - name: ENABLE_RERECAPTCHA
+            value: "false"
+          - name:  MAXIMUM_UNICORN_CONSUMERS
+            value: "0"
+          - name: BASE_MULTIPLIER_ACTIVE_TASKS
+            value: "50"
+          - name: SCHEDULER_LOOKUP_INTERVAL
+            value: "4"
+          - name: UNICORN_WORKERS
+            value: "2"
+          - name: LOOKUP_SCHEDULER_OFF
+            value: "true"
+          - name: DELAY_TASKS
+            value: "true"
+          - name: REDIS_HOST
+            value: redis-cluster-ip-service
+          - name: TENANT_CREATION_DISABLED
+            value: "true"
+          - name: MONGODB_URI
+            value: mongodb://mongo-cluster-ip-service/cenit
+        ports:
+        - containerPort: 8080
+
