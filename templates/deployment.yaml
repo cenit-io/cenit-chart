@@ -37,7 +37,7 @@ spec:
           - name: RABBITMQ_BIGWIG_TX_URL
             value: "amqp://cenit_test:cenit_test@rabbitmq-cluster-ip-service/vhost_cenit"
           - name: MONGODB_URI
-            value: mongodb://mongo-cluster-ip-service/cenit
+            value: mongodb://{{ template "cenit.name" . }}-mongo-svc/cenit
 
 ---
 apiVersion: apps/v1
@@ -83,7 +83,7 @@ spec:
           - name: TENANT_CREATION_DISABLED
             value: "true"
           - name: MONGODB_URI
-            value: mongodb://mongo-cluster-ip-service/cenit
+            value: mongodb://{{ template "cenit.name" . }}-mongo-svc/cenit
         ports:
         - containerPort: 8080
 
