@@ -1,7 +1,7 @@
 apiVersion: v1
 kind: PersistentVolumeClaim
 metadata:
-  name: {{ template "cenit.name" . }}-mongo-pvc
+  name: {{ template "cenit.fullname" . }}-mongo-pvc
 spec:
   accessModes:
     - ReadWriteOnce
@@ -14,23 +14,23 @@ spec:
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: {{ template "cenit.name" . }}-mongo-deployment
+  name: {{ template "cenit.fullname" . }}-mongo-deployment
 spec:
   replicas: 1
   selector:
     matchLabels:
-      db: {{ template "cenit.name" . }}-mongo
+      db: {{ template "cenit.fullname" . }}-mongo
   template:
     metadata:
       labels:
-        db: {{ template "cenit.name" . }}-mongo
+        db: {{ template "cenit.fullname" . }}-mongo
     spec:
       volumes:
-        - name: {{ template "cenit.name" . }}-mongo-storage
+        - name: {{ template "cenit.fullname" . }}-mongo-storage
           persistentVolumeClaim:
-            claimName: {{ template "cenit.name" . }}-mongo-pvc
+            claimName: {{ template "cenit.fullname" . }}-mongo-pvc
       containers:
-      - name: {{ template "cenit.name" . }}-mongodb
+      - name: {{ template "cenit.fullname" . }}-mongodb
         image: mongo:3.6
         resources:
           limits:
@@ -39,7 +39,7 @@ spec:
         ports:
         - containerPort: 27017
         volumeMounts:
-          - name: {{ template "cenit.name" . }}-mongo-storage
+          - name: {{ template "cenit.fullname" . }}-mongo-storage
             mountPath: /data/db
 
 ---
@@ -47,10 +47,10 @@ spec:
 apiVersion: v1
 kind: Service
 metadata:
-  name: {{ template "cenit.name" . }}-mongo-svc
+  name: {{ template "cenit.fullname" . }}-mongo-svc
 spec:
   selector:
-    db: {{ template "cenit.name" . }}-mongo
+    db: {{ template "cenit.fullname" . }}-mongo
   ports:
   - port: 27017
     targetPort: 27017
