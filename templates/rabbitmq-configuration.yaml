@@ -1,3 +1,5 @@
+{{- if not .Values.services.rabbitmq }}
+
 apiVersion: v1
 kind: PersistentVolumeClaim
 metadata:
@@ -34,7 +36,7 @@ spec:
         image: rabbitmq:management
         resources:
           limits:
-            memory: "500m"
+            memory: "1Gi"
             cpu: "350m"
         env:
           - name: RABBITMQ_DEFAULT_PASS
@@ -67,3 +69,5 @@ spec:
   - name: gui-port
     port: 15672
     targetPort: 15672
+
+{{- end }}

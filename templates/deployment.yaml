@@ -35,7 +35,11 @@ spec:
           - name: REDIS_HOST
             value: {{ template "cenit.fullname" . }}-redis-svc
           - name: RABBITMQ_BIGWIG_TX_URL
+          {{- if .Values.services.rabbitmq }}
+            value: {{ .Values.services.rabbitmq }}
+          {{- else }}
             value: "amqp://cenit_test:cenit_test@{{ template "cenit.fullname" . }}-svc/vhost_cenit"
+          {{- end }}
           - name: MONGODB_URI
             value: mongodb://{{ template "cenit.fullname" . }}-mongo-svc/cenit
 
