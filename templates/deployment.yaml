@@ -32,8 +32,19 @@ spec:
             value: "false"
           - name: LOAD_DELAYED_MESSAGES_ON_START
             value: "true"
+          {{- if and .Values.services.redis.host .Values.services.redis.port .Values.services.redis.db .Values.services.redis.pwd | not }}
           - name: REDIS_HOST
             value: {{ template "cenit.fullname" . }}-redis-svc
+          {{- else }}
+          - name: REDIS_HOST
+            value: {{ .Values.services.redis.host | toString | quote }}
+          - name: REDIS_PORT
+            value: {{ .Values.services.redis.port | toString | quote }}
+          - name: REDIS_DB
+            value: {{ .Values.services.redis.db | toString | quote }}
+          - name: REDIS_PASSWORD
+            value: {{ .Values.services.redis.pwd | toString | quote }}
+          {{- end }}
           - name: RABBITMQ_BIGWIG_TX_URL
           {{- if .Values.services.rabbitmq }}
             value: {{ .Values.services.rabbitmq }}
@@ -82,8 +93,19 @@ spec:
             value: "true"
           - name: DELAY_TASKS
             value: "true"
+          {{- if and .Values.services.redis.host .Values.services.redis.port .Values.services.redis.db .Values.services.redis.pwd | not }}
           - name: REDIS_HOST
-            value: redis-cluster-ip-service
+            value: {{ template "cenit.fullname" . }}-redis-svc
+          {{- else }}
+          - name: REDIS_HOST
+            value: {{ .Values.services.redis.host | toString | quote }}
+          - name: REDIS_PORT
+            value: {{ .Values.services.redis.port | toString | quote }}
+          - name: REDIS_DB
+            value: {{ .Values.services.redis.db | toString | quote }}
+          - name: REDIS_PASSWORD
+            value: {{ .Values.services.redis.pwd | toString | quote }}
+          {{- end }}
           - name: TENANT_CREATION_DISABLED
             value: "true"
           - name: MONGODB_URI

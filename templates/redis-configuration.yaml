@@ -1,3 +1,5 @@
+{{- if and .Values.services.redis.host .Values.services.redis.port .Values.services.redis.db .Values.services.redis.pwd | not }}
+
 apiVersion: v1
 kind: PersistentVolumeClaim
 metadata:
@@ -34,7 +36,7 @@ spec:
         image: redis
         resources:
           limits:
-            memory: "500m"
+            memory: "1Gi"
             cpu: "350m"
         command: ["redis-server", "--appendonly", "yes"]
         ports:
@@ -57,3 +59,5 @@ spec:
   - name: service-port
     port: 6379
     targetPort: 6379
+
+{{- end }}
