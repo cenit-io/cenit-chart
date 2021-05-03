@@ -32,6 +32,54 @@ spec:
             value: {{ default false .Values.env.backend.lookupSchedulerOff | toString | quote  }}
           - name: LOAD_DELAYED_MESSAGES_ON_START
             value: {{ default true .Values.env.backend.loadDelayedMessagesOnStart | toString | quote  }}
+          {{- if .Values.env.common.awsS3Region }}
+          - name: AWS_S3_REGION
+            value: {{ .Values.env.common.awsS3Region | toString | quote  }}
+          {{- end }}
+          {{- if .Values.env.common.awsS3BucketPrefix }}
+          - name: AWS_S3_BUCKET_PREFIX
+            value: {{ .Values.env.common.awsS3BucketPrefix | toString | quote  }}
+          {{- end }}
+          {{- if .Values.env.common.awsAccessKeyId }}
+          - name: AWS_ACCESS_KEY_ID
+            value: {{ .Values.env.common.awsAccessKeyId | toString | quote }}
+          {{- end }}
+          {{- if .Values.env.common.awsSecretAccessKey }}
+          - name: AWS_SECRET_ACCESS_KEY
+            value: {{ .Values.env.common.awsSecretAccessKey | toString | quote }}
+          {{- end }}
+          {{- if .Values.env.common.defaultFileStore }}
+          - name: DEFAULT_FILE_STORE
+            value: {{ .Values.env.common.defaultFileStore | toString | quote }}
+          {{- end }}
+          {{- if .Values.env.common.homePage }}
+          - name: HOMEPAGE
+            value: {{ .Values.env.common.homePage | toString | quote }}
+          {{- end }}
+          {{- if .Values.env.common.docsUrl }}
+          - name: DOCS_URL
+            value: {{ .Values.env.common.docsUrl | toString | quote }}
+          {{- end }}
+          {{- if .Values.env.common.tenantCreationDisabled }}
+          - name: TENANT_CREATION_DISABLED
+            value: {{ .Values.env.common.tenantCreationDisabled | toString | quote }}
+          {{- end }}
+          {{- if .Values.env.common.gmailUsername }}
+          - name: GMAIL_USERNAME
+            value: {{ .Values.env.common.gmailUsername | toString | quote }}
+          {{- end }}
+          {{- if .Values.env.common.gmailPassword }}
+          - name: GMAIL_PASSWORD
+            value: {{ .Values.env.common.gmailPassword | toString | quote }}
+          {{- end }}
+          {{- if .Values.env.common.mailDomain }}
+          - name: MAIL_DOMAIN
+            value: {{ .Values.env.common.mailDomain | toString | quote }}
+          {{- end }}
+          {{- if .Values.env.common.host }}
+          - name: HOST
+            value: {{ .Values.env.common.host | toString | quote }}
+          {{- end }} 
           {{- if and .Values.services.redis.host .Values.services.redis.port .Values.services.redis.db .Values.services.redis.pwd | not }}
           - name: REDIS_HOST
             value: {{ template "cenit.fullname" . }}-redis-svc
