@@ -23,15 +23,15 @@ spec:
         command: ["bundle", "exec", "unicorn", "-c", "config/unicorn.rb"]
         env:
           - name: SCHEDULER_LOOKUP_INTERVAL
-            value: "4"
+            value: {{ default 4 .Values.env.common.schedulerLookupInterval | toString | quote  }}
           - name: UNICORN_WORKERS
-            value: "2"
+            value: {{ default 2 .Values.env.common.unicornWorkers | toString | quote  }}
           - name: MAXIMUM_UNICORN_CONSUMERS
-            value: "2"
+            value: {{ default 2 .Values.env.backend.maximumUniconrnConsumers | toString | quote  }}
           - name: LOOKUP_SCHEDULER_OFF
-            value: "false"
+            value: {{ default false .Values.env.backend.lookupSchedulerOff | toString | quote  }}
           - name: LOAD_DELAYED_MESSAGES_ON_START
-            value: "true"
+            value: {{ default true .Values.env.backend.loadDelayedMessagesOnStart | toString | quote  }}
           {{- if and .Values.services.redis.host .Values.services.redis.port .Values.services.redis.db .Values.services.redis.pwd | not }}
           - name: REDIS_HOST
             value: {{ template "cenit.fullname" . }}-redis-svc
