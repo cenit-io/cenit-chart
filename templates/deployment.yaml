@@ -127,20 +127,20 @@ spec:
             cpu: "1000m"
         command: ["bundle", "exec", "unicorn", "-c", "config/unicorn.rb"]
         env:
-          - name: ENABLE_RERECAPTCHA
-            value: "false"
           - name:  MAXIMUM_UNICORN_CONSUMERS
             value: "0"
+          - name: ENABLE_RERECAPTCHA
+            value: {{ default false .Values.env.frontend.enableRerecaptcha | toString | quote }}
           - name: BASE_MULTIPLIER_ACTIVE_TASKS
-            value: "50"
+            value: {{ default 50 .Values.env.frontend.baseMultiplierActiveTasks | toString | quote }}
           - name: SCHEDULER_LOOKUP_INTERVAL
-            value: "4"
+            value: {{ default 4 .Values.env.common.schedulerLookupInterval | toString | quote }}
           - name: UNICORN_WORKERS
-            value: "2"
+            value: {{ default 2 .Values.env.frontend.unicornWorkers | toString | quote }}
           - name: LOOKUP_SCHEDULER_OFF
-            value: "true"
+            value: {{ default true .Values.env.frontend.lookupSchedulerOff | toString | quote }}
           - name: DELAY_TASKS
-            value: "true"
+            value: {{ default true .Values.env.frontend.delayTasks | toString | quote }}
           {{- if and .Values.services.redis.host .Values.services.redis.port .Values.services.redis.db .Values.services.redis.pwd | not }}
           - name: REDIS_HOST
             value: {{ template "cenit.fullname" . }}-redis-svc
@@ -155,7 +155,7 @@ spec:
             value: {{ .Values.services.redis.pwd | toString | quote }}
           {{- end }}
           - name: TENANT_CREATION_DISABLED
-            value: "true"
+            value: {{ default true .Values.env.frontend.tenantCreationDisabled | toString | quote }}
           - name: MONGODB_URI
             value: mongodb://{{ template "cenit.fullname" . }}-mongo-svc/cenit
         ports:
