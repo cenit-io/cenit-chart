@@ -12,6 +12,20 @@ spec:
       labels:
         platform: {{ template "cenit.fullname" . }}-backend
     spec:
+      initContainers:
+      - name: init-mongo
+        image: busybox:stable
+        command: ['sh', '-c', "until nc -z {{ template "cenit.fullname" . }}-mongo-svc 27017; do sleep 30; done;"]
+      {{- if not .Values.services.rabbitmq }}
+      - name: init-rabbitmq
+        image: busybox:stable
+        command: ['sh', '-c', "until nc -z {{ template "cenit.fullname" . }}-rabbitmq-svc 5672; do sleep 30; done;"]
+      {{- end }}
+      {{- if not .Values.services.redis.host }}
+      - name: init-redis
+        image: busybox:stable
+        command: ['sh', '-c', "until nc -z {{ template "cenit.fullname" . }}-redis-svc 6379; do sleep 30; done;"]
+      {{- end }}
       containers:
       - name: {{ template "cenit.fullname" . }}-backend
         image: cenitgroup/cenitio:backend
@@ -116,7 +130,16 @@ spec:
     metadata:
       labels:
         platform: {{ template "cenit.fullname" . }}-frontend
-    spec:  
+    spec:
+      initContainers:
+      - name: init-mongo
+        image: busybox:stable
+        command: ['sh', '-c', "until nc -z {{ template "cenit.fullname" . }}-mongo-svc 27017; do sleep 30; done;"]
+      {{- if not .Values.services.redis.host }}
+      - name: init-redis
+        image: busybox:stable
+        command: ['sh', '-c', "until nc -z {{ template "cenit.fullname" . }}-redis-svc 6379; do sleep 30; done;"]
+      {{- end }}
       containers:
       - name: {{ template "cenit.fullname" . }}-frontend
         image: cenitgroup/cenitio:frontend
