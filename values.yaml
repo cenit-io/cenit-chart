@@ -1,2 +1,52 @@
+resources:
+  backend:
+    cpu: 1000
+    memory: 1
+  frontend:
+    cpu: 1000
+    memory: 1
+  rabbitmq:
+    cpu: 350
+    memory: 1
+  redis:
+    cpu: 350
+    memory: 1
+  mongodb:
+    cpu: 350
+    memory: 1
+
 services:
-  rabbitmq: ""
+  rabbitmq:
+  redis:
+    host:
+    db:
+    port:
+    pwd:
+
+env:
+  common:
+    schedulerLookupInterval:
+    unicornWorkers:
+    awsS3Region:
+    awsS3BucketPrefix:
+    awsAccessKeyId:
+    awsSecretAccessKey:
+    defaultFileStore:
+    homePage:
+    docsUrl:
+    tenantCreationDisabled:
+    gmailUsername:
+    gmailPassword:
+    mailDomain:
+    host:
+  backend:
+    maximumUniconrnConsumers:
+    lookupSchedulerOff:
+    loadDelayedMessagesOnStart:
+  frontend:
+    enableRerecaptcha:
+    baseMultiplierActiveTasks:
+    lookupSchedulerOff:
+    delayTasks:
+    unicornWorkers:
+    baseMultiplierActiveTasks:
