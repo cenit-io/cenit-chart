@@ -34,8 +34,8 @@ spec:
         image: mongo:3.6
         resources:
           limits:
-            memory: "1Gi"
-            cpu: "350m"
+            memory: "{{ default 1 .Values.resources.mongodb.memory }}Gi"
+            cpu: "{{ default 350 .Values.resources.mongodb.cpu }}m"
         ports:
         - containerPort: 27017
         volumeMounts:

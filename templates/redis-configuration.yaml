@@ -36,8 +36,8 @@ spec:
         image: redis
         resources:
           limits:
-            memory: "1Gi"
-            cpu: "350m"
+            memory: "{{ default 1 .Values.resources.redis.memory }}Gi"
+            cpu: "{{ default 350 .Values.resources.redis.cpu }}m"
         command: ["redis-server", "--appendonly", "yes"]
         ports:
         - containerPort: 6379

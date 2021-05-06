@@ -32,8 +32,8 @@ spec:
         imagePullPolicy: Always
         resources:
           limits:
-            memory: "1Gi"
-            cpu: "1000m"
+            memory: "{{ default 1 .Values.resources.backend.memory }}Gi"
+            cpu: "{{ default 1000 .Values.resources.backend.cpu }}m"
         command: ["bundle", "exec", "unicorn", "-c", "config/unicorn.rb"]
         env:
           - name: SCHEDULER_LOOKUP_INTERVAL
@@ -146,8 +146,8 @@ spec:
         imagePullPolicy: Always
         resources:
           limits:
-            memory: "1Gi"
-            cpu: "1000m"
+            memory: "{{ default 1 .Values.resources.frontend.memory }}Gi"
+            cpu: "{{ default 1000 .Values.resources.frontend.cpu }}m"
         command: ["bundle", "exec", "unicorn", "-c", "config/unicorn.rb"]
         env:
           - name:  MAXIMUM_UNICORN_CONSUMERS

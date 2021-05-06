@@ -36,8 +36,8 @@ spec:
         image: rabbitmq:management
         resources:
           limits:
-            memory: "1Gi"
-            cpu: "350m"
+            memory: "{{ default 1 .Values.resources.rabbitmq.memory }}Gi"
+            cpu: "{{ default 350 .Values.resources.rabbitmq.cpu }}m"
         env:
           - name: RABBITMQ_DEFAULT_PASS
             value: "cenit_test"
