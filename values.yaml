@@ -8,6 +8,10 @@ service:
   ##
   # nodePort:
 
+## Containers resources
+## cpu: 1000 = 1Gb
+## cpu: 500 = 0.5Gb
+## memory: 1 = 1GB
 resources:
   backend:
     cpu: 1000
