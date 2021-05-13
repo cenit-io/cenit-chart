@@ -19,23 +19,24 @@ resources:
   frontend:
     cpu: 1000
     memory: 1
-  rabbitmq:
-    cpu: 350
-    memory: 1
-  redis:
-    cpu: 350
-    memory: 1
   mongodb:
     cpu: 350
     memory: 1
 
 services:
   rabbitmq:
+    ampqUrl:
+    resources:
+      cpu: 350
+      memory: 1
   redis:
     host:
     db:
     port:
     pwd:
+    resources:
+      cpu: 350
+      memory: 1
 
 env:
   common:

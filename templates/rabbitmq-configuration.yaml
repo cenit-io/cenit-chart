@@ -1,4 +1,4 @@
-{{- if not .Values.services.rabbitmq }}
+{{- if not .Values.services.rabbitmq.ampqUrl }}
 
 apiVersion: v1
 kind: PersistentVolumeClaim
@@ -36,8 +36,8 @@ spec:
         image: rabbitmq:management
         resources:
           limits:
-            memory: "{{ default 1 .Values.resources.rabbitmq.memory }}Gi"
-            cpu: "{{ default 350 .Values.resources.rabbitmq.cpu }}m"
+            memory: "{{ default 1 .Values.services.rabbitmq.resources.memory }}Gi"
+            cpu: "{{ default 350 .Values.services.rabbitmq.resources.cpu }}m"
         env:
           - name: RABBITMQ_DEFAULT_PASS
             value: "cenit_test"

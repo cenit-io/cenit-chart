@@ -16,7 +16,7 @@ spec:
       - name: init-mongo
         image: busybox:stable
         command: ['sh', '-c', "until nc -z {{ template "cenit.fullname" . }}-mongo-svc 27017; do sleep 30; done;"]
-      {{- if not .Values.services.rabbitmq }}
+      {{- if not .Values.services.rabbitmq.ampqUrl }}
       - name: init-rabbitmq
         image: busybox:stable
         command: ['sh', '-c', "until nc -z {{ template "cenit.fullname" . }}-rabbitmq-svc 5672; do sleep 30; done;"]
@@ -108,8 +108,8 @@ spec:
             value: {{ .Values.services.redis.pwd | toString | quote }}
           {{- end }}
           - name: RABBITMQ_BIGWIG_TX_URL
-          {{- if .Values.services.rabbitmq }}
-            value: {{ .Values.services.rabbitmq }}
+          {{- if .Values.services.rabbitmq.ampqUrl }}
+            value: {{ .Values.services.rabbitmq.ampqUrl }}
           {{- else }}
             value: "amqp://cenit_test:cenit_test@{{ template "cenit.fullname" . }}-rabbitmq-svc/vhost_cenit"
           {{- end }}
