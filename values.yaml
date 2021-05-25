@@ -14,13 +14,10 @@ service:
 ## memory: 1 = 1GB
 resources:
   backend:
-    cpu: 1000
+    cpu: 750
     memory: 1
   frontend:
-    cpu: 1000
-    memory: 1
-  mongodb:
-    cpu: 350
+    cpu: 750
     memory: 1
 
 services:
@@ -34,6 +31,12 @@ services:
     db:
     port:
     pwd:
+    resources:
+      cpu: 350
+      memory: 1
+  mongodb:
+    database:
+    storage:  #Storage are expressed in Gb
     resources:
       cpu: 350
       memory: 1

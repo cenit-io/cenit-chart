@@ -7,7 +7,7 @@ spec:
     - ReadWriteOnce
   resources:
     requests:
-      storage: 1Gi
+      storage: {{ default 1 .Values.services.mongodb.storage }}Gi
 
 ---
 
@@ -34,8 +34,8 @@ spec:
         image: mongo:3.6
         resources:
           limits:
-            memory: "{{ default 1 .Values.resources.mongodb.memory }}Gi"
-            cpu: "{{ default 350 .Values.resources.mongodb.cpu }}m"
+            memory: "{{ default 1 .Values.services.mongodb.resources.memory }}Gi"
+            cpu: "{{ default 350 .Values.services.mongodb.resources.cpu }}m"
         ports:
         - containerPort: 27017
         volumeMounts:
