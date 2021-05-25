@@ -78,18 +78,6 @@ spec:
           - name: TENANT_CREATION_DISABLED
             value: {{ .Values.env.common.tenantCreationDisabled | toString | quote }}
           {{- end }}
-          {{- if .Values.env.common.gmailUsername }}
-          - name: GMAIL_USERNAME
-            value: {{ .Values.env.common.gmailUsername | toString | quote }}
-          {{- end }}
-          {{- if .Values.env.common.gmailPassword }}
-          - name: GMAIL_PASSWORD
-            value: {{ .Values.env.common.gmailPassword | toString | quote }}
-          {{- end }}
-          {{- if .Values.env.common.mailDomain }}
-          - name: MAIL_DOMAIN
-            value: {{ .Values.env.common.mailDomain | toString | quote }}
-          {{- end }}
           {{- if .Values.env.common.host }}
           - name: HOST
             value: {{ .Values.env.common.host | toString | quote }}
@@ -115,7 +103,32 @@ spec:
           {{- end }}
           - name: MONGODB_URI
             value: mongodb://{{ template "cenit.fullname" . }}-mongo-svc/{{ default "cenit" .Values.services.mongodb.database }}
-
+          {{- if and .Values.env.common.smtpConfig.userName .Values.env.common.smtpConfig.password }}
+          - name: SMTP_USER_NAME
+            value: {{ .Values.env.common.smtpConfig.userName | toString | quote }}
+          - name: SMTP_PASSWORD
+            value: {{ .Values.env.common.smtpConfig.password | toString | quote }}
+          {{- end }}
+          {{- if .Values.env.common.smtpConfig.address }}
+          - name: SMTP_ADDRESS
+            value: {{ .Values.env.common.smtpConfig.address | toString | quote }}
+          {{- end }}
+          {{- if .Values.env.common.smtpConfig.port }}
+          - name: SMTP_PORT
+            value: {{ .Values.env.common.smtpConfig.port | toString | quote }}
+          {{- end }}
+          {{- if .Values.env.common.smtpConfig.domain }}
+          - name: SMTP_DOMAIN
+            value: {{ .Values.env.common.smtpConfig.domain | toString | quote }}
+          {{- end }}
+          {{- if .Values.env.common.smtpConfig.authentication }}
+          - name: SMTP_AUTH_TYPE
+            value: {{ .Values.env.common.smtpConfig.authentication | toString | quote }}
+          {{- end }}
+          {{- if .Values.env.common.smtpConfig.enableStarttlsAuto }}
+          - name: SMTP_TTLS_AUTO
+            value: {{ .Values.env.common.smtpConfig.enableStarttlsAuto | toString | quote }}
+          {{- end }}
 ---
 apiVersion: apps/v1
 kind: Deployment
@@ -209,21 +222,35 @@ spec:
           - name: DOCS_URL
             value: {{ .Values.env.common.docsUrl | toString | quote }}
           {{- end }}
-          {{- if .Values.env.common.gmailUsername }}
-          - name: GMAIL_USERNAME
-            value: {{ .Values.env.common.gmailUsername | toString | quote }}
-          {{- end }}
-          {{- if .Values.env.common.gmailPassword }}
-          - name: GMAIL_PASSWORD
-            value: {{ .Values.env.common.gmailPassword | toString | quote }}
-          {{- end }}
-          {{- if .Values.env.common.mailDomain }}
-          - name: MAIL_DOMAIN
-            value: {{ .Values.env.common.mailDomain | toString | quote }}
-          {{- end }}
           {{- if .Values.env.common.host }}
           - name: HOST
             value: {{ .Values.env.common.host | toString | quote }}
+          {{- end }}
+          {{- if and .Values.env.common.smtpConfig.userName .Values.env.common.smtpConfig.password }}
+          - name: SMTP_USER_NAME
+            value: {{ .Values.env.common.smtpConfig.userName | toString | quote }}
+          - name: SMTP_PASSWORD
+            value: {{ .Values.env.common.smtpConfig.password | toString | quote }}
+          {{- end }}
+          {{- if .Values.env.common.smtpConfig.address }}
+          - name: SMTP_ADDRESS
+            value: {{ .Values.env.common.smtpConfig.address | toString | quote }}
+          {{- end }}
+          {{- if .Values.env.common.smtpConfig.port }}
+          - name: SMTP_PORT
+            value: {{ .Values.env.common.smtpConfig.port | toString | quote }}
+          {{- end }}
+          {{- if .Values.env.common.smtpConfig.domain }}
+          - name: SMTP_DOMAIN
+            value: {{ .Values.env.common.smtpConfig.domain | toString | quote }}
+          {{- end }}
+          {{- if .Values.env.common.smtpConfig.authentication }}
+          - name: SMTP_AUTH_TYPE
+            value: {{ .Values.env.common.smtpConfig.authentication | toString | quote }}
+          {{- end }}
+          {{- if .Values.env.common.smtpConfig.enableStarttlsAuto }}
+          - name: SMTP_TTLS_AUTO
+            value: {{ .Values.env.common.smtpConfig.enableStarttlsAuto | toString | quote }}
           {{- end }}
         ports:
         - containerPort: 8080

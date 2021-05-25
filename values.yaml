@@ -55,8 +55,25 @@ env:
     tenantCreationDisabled:
     gmailUsername:
     gmailPassword:
-    mailDomain:
     host:
+
+    ## SMTP configuration
+    ##
+    ## -default values-
+    ## address: smtp.gmail.com
+    ## port: 587
+    ## domain: cenitsaas.com
+    ## authentication: plain
+    ## enable_starttls_auto: true
+    smtpConfig:
+      address:
+      port:
+      domain:
+      userName:
+      password:
+      authentication:
+      enableStarttlsAuto:
+
   backend:
     maximumUniconrnConsumers:
     lookupSchedulerOff:
