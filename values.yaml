@@ -62,8 +62,6 @@ env:
     homePage:
     docsUrl:
     tenantCreationDisabled:
-    gmailUsername:
-    gmailPassword:
     host:
 
     ## SMTP configuration
@@ -93,4 +91,3 @@ env:
     lookupSchedulerOff:
     delayTasks:
     unicornWorkers:
-    baseMultiplierActiveTasks:
