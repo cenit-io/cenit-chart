@@ -3,7 +3,9 @@ kind: Service
 metadata:
   name: {{ template "cenit.fullname" . }}-svc
 spec:
+  {{- if not (eq .Values.service.type "ClusterIP") }}
   type: {{ .Values.service.type }}
+  {{- end }}
   ports:
   - name: cenit-frontend
     port: {{ .Values.service.port }}
