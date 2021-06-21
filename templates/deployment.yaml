@@ -28,7 +28,7 @@ spec:
       {{- end }}
       containers:
       - name: {{ template "cenit.fullname" . }}-backend
-        image: cenitgroup/cenitio:backend-{{ default "latest" .Values.image.backend }}
+        image: cenitio/backend:{{ default "latest" .Values.image.backend }}
         imagePullPolicy: Always
         resources:
           limits:
@@ -155,7 +155,7 @@ spec:
       {{- end }}
       containers:
       - name: {{ template "cenit.fullname" . }}-frontend
-        image: cenitgroup/cenitio:frontend-{{ default "latest" .Values.image.frontend }}
+        image: cenitio/frontend:{{ default "latest" .Values.image.frontend }}
         imagePullPolicy: Always
         resources:
           limits:

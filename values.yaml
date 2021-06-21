@@ -1,7 +1,14 @@
 ## Docker image reference to deploy.
-## -the value of image is the first seven numbers of sha256 checksum of a commit from
+## -the value of images is the name of base image and the first seven numbers of sha256 checksum of a commit from
 ## master branch in github-
 ## default value: latest
+## Frontend availables images: https://hub.docker.com/repository/docker/cenitio/frontend/
+## Backend availables images: https://hub.docker.com/repository/docker/cenitio/backend/
+## Example:
+## image:
+##   backend:ubuntu-574d627
+##   frontend:newrelic-574d627
+
 image:
   backend:
   frontend:
