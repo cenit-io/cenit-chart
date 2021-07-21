@@ -13,7 +13,8 @@ image:
   customImage: false
   backend:
   frontend:
-
+  privateRepository:
+    keys:
 
 ## Kubernetes service type
 service:
