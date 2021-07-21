@@ -26,6 +26,12 @@ spec:
         image: busybox:stable
         command: ['sh', '-c', "until nc -z {{ template "cenit.fullname" . }}-redis-svc 6379; do sleep 30; done;"]
       {{- end }}
+      {{- if .Values.image.privateRepository.keys }}
+      imagePullSecrets: |-
+        {{- range .Values.image.privateRepository.keys }}
+        - name: {{ . }}
+        {{- end }}
+      {{- end }}
       containers:
       - name: {{ template "cenit.fullname" . }}-backend
       {{- if and .Values.image.customImage .Values.image.backend }}
