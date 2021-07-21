@@ -10,13 +10,14 @@
 ##   frontend:newrelic-574d627
 
 image:
+  customImage: false
   backend:
   frontend:
 
 
 ## Kubernetes service type
 service:
-  type: ClusterIP
+  type: NodePort
   port: 80
 
   ## Specify the nodePort value for the LoadBalancer and NodePort service types.
