@@ -27,7 +27,7 @@ spec:
         command: ['sh', '-c', "until nc -z {{ template "cenit.fullname" . }}-redis-svc 6379; do sleep 30; done;"]
       {{- end }}
       {{- if .Values.image.privateRepository.keys }}
-      imagePullSecrets: |-
+      imagePullSecrets:
         {{- range .Values.image.privateRepository.keys }}
         - name: {{ . }}
         {{- end }}
@@ -162,6 +162,12 @@ spec:
       - name: init-redis
         image: busybox:stable
         command: ['sh', '-c', "until nc -z {{ template "cenit.fullname" . }}-redis-svc 6379; do sleep 30; done;"]
+      {{- end }}
+      {{- if .Values.image.privateRepository.keys }}
+      imagePullSecrets:
+        {{- range .Values.image.privateRepository.keys }}
+        - name: {{ . }}
+        {{- end }}
       {{- end }}
       containers:
       - name: {{ template "cenit.fullname" . }}-frontend
