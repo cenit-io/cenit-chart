@@ -18,8 +18,8 @@ image:
 
 ## Kubernetes service type
 service:
-  type: NodePort
-  port: 80
+  type: ClusterIP
+  port: 8080
 
   ## Specify the nodePort value for the LoadBalancer and NodePort service types.
   ## ref: https://kubernetes.io/docs/concepts/services-networking/service/#type-nodeport
@@ -56,8 +56,15 @@ services:
     database:
     storage:  #Storage are expressed in Gb
     resources:
-      cpu: 350
-      memory: 1
+      cpu:
+      memory:
+    ui:
+      enable:
+      cpu:
+      memory:
+      username:
+      pwd:
+      ssl:
 
 env:
   common:

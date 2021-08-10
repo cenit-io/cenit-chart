@@ -54,4 +54,44 @@ spec:
   ports:
   - port: 27017
     targetPort: 27017
-    
+
+---
+
+{{- if .Values.services.mongodb.ui.enable }}
+
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: {{ template "cenit.fullname" . }}-mongo-ui
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      db: {{ template "cenit.fullname" . }}-mongo-ui
+  template:
+    metadata:
+      labels:
+        db: {{ template "cenit.fullname" . }}-mongo-ui
+    spec:
+      containers:
+      - name: {{ template "cenit.fullname" . }}-mongo-ui
+        image: mongo-express
+        resources:
+          limits:
+            memory: "{{ default 1 .Values.services.mongodb.ui.memory }}Gi"
+            cpu: "{{ default 1000 .Values.services.mongodb.ui.cpu }}m"
+        env:
+          - name: ME_CONFIG_OPTIONS_EDITORTHEME
+            value: "dracula"
+          - name: ME_CONFIG_MONGODB_SERVER
+            value: {{ template "cenit.fullname" . }}-mongo-svc
+          - name: ME_CONFIG_BASICAUTH_USERNAME
+            value: "{{ default "admin" .Values.services.mongodb.ui.username }}"
+          - name: ME_CONFIG_BASICAUTH_PASSWORD
+            value: "{{ default "admin" .Values.services.mongodb.ui.pwd }}"
+          - name: ME_CONFIG_SITE_SSL_ENABLED
+            value: "{{ default true .Values.services.mongodb.ui.ssl }}"
+        ports:
+        - containerPort: 8081
+
+{{- end }}
