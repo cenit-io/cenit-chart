@@ -89,9 +89,20 @@ spec:
             value: "{{ default "admin" .Values.services.mongodb.ui.username }}"
           - name: ME_CONFIG_BASICAUTH_PASSWORD
             value: "{{ default "admin" .Values.services.mongodb.ui.pwd }}"
-          - name: ME_CONFIG_SITE_SSL_ENABLED
-            value: "{{ default true .Values.services.mongodb.ui.ssl }}"
         ports:
         - containerPort: 8081
+
+---
+
+apiVersion: v1
+kind: Service
+metadata:
+  name: {{ template "cenit.fullname" . }}-mongo-ui-svc
+spec:
+  selector:
+    db: {{ template "cenit.fullname" . }}-mongo-ui
+  ports:
+  - port: 8081
+    targetPort: 8081
 
 {{- end }}
