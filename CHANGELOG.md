@@ -5,6 +5,17 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [1.5.0] - 2021-08-10
+
+### Added
+
+- Mongo UI
+
+### Fixed
+
+- Fix bug about secret key
+
+
 ## [1.4.0] - 2021-07-21
 
 ### Added
@@ -54,6 +65,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Export service using LoadBalancer
 - Default values if not specified by user
 
+[1.5.0]: https://github.com/cenit-io/cenit-chart/compare/v1.4.0...v1.5.0
 [1.4.0]: https://github.com/cenit-io/cenit-chart/compare/v1.3.0...v1.4.0
 [1.3.0]: https://github.com/cenit-io/cenit-chart/compare/v1.2.1...v1.3.0
 [1.2.1]: https://github.com/cenit-io/cenit-chart/compare/v1.2.0...v1.2.1
