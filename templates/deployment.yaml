@@ -84,10 +84,8 @@ spec:
           - name: DOCS_URL
             value: {{ .Values.env.common.docsUrl | toString | quote }}
           {{- end }}
-          {{- if .Values.env.common.tenantCreationDisabled }}
           - name: TENANT_CREATION_DISABLED
-            value: {{ .Values.env.common.tenantCreationDisabled | toString | quote }}
-          {{- end }}
+            value: {{ default false .Values.env.common.tenantCreationDisabled | toString | quote }}
           {{- if .Values.env.common.host }}
           - name: HOST
             value: {{ .Values.env.common.host | toString | quote }}
@@ -211,7 +209,7 @@ spec:
             value: {{ .Values.services.redis.pwd | toString | quote }}
           {{- end }}
           - name: TENANT_CREATION_DISABLED
-            value: {{ default true .Values.env.frontend.tenantCreationDisabled | toString | quote }}
+            value: {{ default false .Values.env.common.tenantCreationDisabled | toString | quote }}
           - name: MONGODB_URI
             value: mongodb://{{ template "cenit.fullname" . }}-mongo-svc/{{ default "cenit" .Values.services.mongodb.database }}
           {{- if .Values.env.common.awsS3Region }}
