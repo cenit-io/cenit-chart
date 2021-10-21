@@ -12,7 +12,11 @@
 image:
   customImage: false
   backend:
+    repository:
+    replicas:
   frontend:
+    repository:
+    replicas:
   privateRepository:
     keys:
 

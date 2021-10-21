@@ -3,7 +3,7 @@ kind: Deployment
 metadata:
   name: {{ template "cenit.fullname" . }}-deployment-backend
 spec:
-  replicas: {{ default 1 .Values.backendReplicas }}
+  replicas: {{ default 1 .Values.image.backend.replicas }}
   selector:
     matchLabels:
       platform: {{ template "cenit.fullname" . }}-backend
@@ -34,10 +34,10 @@ spec:
       {{- end }}
       containers:
       - name: {{ template "cenit.fullname" . }}-backend
-      {{- if and .Values.image.customImage .Values.image.backend }}
-        image: {{ .Values.image.backend }}
+      {{- if and .Values.image.customImage .Values.image.backend.repository }}
+        image: {{ .Values.image.backend.repository }}
       {{- else }}
-        image: cenitio/backend:{{ default "latest" .Values.image.backend }}
+        image: cenitio/backend:{{ default "latest" .Values.image.backend.repository }}
       {{- end }}
         imagePullPolicy: Always
         resources:
@@ -143,7 +143,7 @@ kind: Deployment
 metadata:
   name: {{ template "cenit.fullname" . }}-deployment-frontend
 spec:
-  replicas: {{ default 1 .Values.backendReplicas }}
+  replicas: {{ default 1 .Values.image.frontend.replicas }}
   selector:
     matchLabels:
       platform: {{ template "cenit.fullname" . }}-frontend
@@ -169,10 +169,10 @@ spec:
       {{- end }}
       containers:
       - name: {{ template "cenit.fullname" . }}-frontend
-      {{- if and .Values.image.customImage .Values.image.frontend }}
-        image: {{ .Values.image.frontend }}
+      {{- if and .Values.image.customImage .Values.image.frontend.repository }}
+        image: {{ .Values.image.frontend.repository }}
       {{- else }}
-        image: cenitio/frontend:{{ default "latest" .Values.image.frontend }}
+        image: cenitio/frontend:{{ default "latest" .Values.image.frontend.repository }}
       {{- end }}
         imagePullPolicy: Always
         resources:
