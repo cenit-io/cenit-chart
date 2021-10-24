@@ -5,6 +5,9 @@ metadata:
 spec:
   accessModes:
     - ReadWriteOnce
+  {{- if .Values.services.csiDrive }}
+  storageClassName: ebs-sc
+  {{- end }}
   resources:
     requests:
       storage: {{ default 1 .Values.services.mongodb.storage }}Gi
