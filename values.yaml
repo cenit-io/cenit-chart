@@ -10,6 +10,7 @@
 ##   frontend:newrelic-574d627
 
 image:
+  deploy: true
   customImage: false
   backend:
     repository:
