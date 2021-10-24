@@ -44,6 +44,7 @@ resources:
     memory: 1
 
 services:
+  csiDrive: false
   rabbitmq:
     ampqUrl:
     resources:
