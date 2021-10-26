@@ -1,8 +1,11 @@
-{{- if .Values.services.csiDrive }}
+{{- $drive := lookup "v1" "StorageClass" "" "ebs-sc" -}}
+{{- if not $drive -}}
+{{- if .Values.services.csiDrive -}}
 kind: StorageClass
 apiVersion: storage.k8s.io/v1
 metadata:
   name: ebs-sc
 provisioner: ebs.csi.aws.com
 volumeBindingMode: WaitForFirstConsumer
-{{- end }}
+{{- end -}}
+{{- end -}}
