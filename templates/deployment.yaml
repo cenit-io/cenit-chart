@@ -47,6 +47,8 @@ spec:
             cpu: "{{ default 1000 .Values.resources.backend.cpu }}m"
         command: ["bundle", "exec", "unicorn", "-c", "config/unicorn.rb"]
         env:
+          - name: SKIP_DB_INITIALIZATION
+            value: {{ default false .Values.env.backend.skipInitialization | toString | quote  }}
           - name: SCHEDULER_LOOKUP_INTERVAL
             value: {{ default 4 .Values.env.common.schedulerLookupInterval | toString | quote  }}
           - name: UNICORN_WORKERS
