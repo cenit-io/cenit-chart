@@ -104,6 +104,7 @@ env:
       enableStarttlsAuto:
 
   backend:
+    skipInitialization:
     maximumUniconrnConsumers:
     lookupSchedulerOff:
     loadDelayedMessagesOnStart:
