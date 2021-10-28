@@ -48,7 +48,7 @@ spec:
         command: ["bundle", "exec", "unicorn", "-c", "config/unicorn.rb"]
         env:
           - name: SKIP_DB_INITIALIZATION
-            value: {{ default false .Values.env.backend.skipInitialization | toString | quote  }}
+            value: {{ default false .Values.env.common.skipInitialization | toString | quote  }}
           - name: SCHEDULER_LOOKUP_INTERVAL
             value: {{ default 4 .Values.env.common.schedulerLookupInterval | toString | quote  }}
           - name: UNICORN_WORKERS
@@ -186,6 +186,8 @@ spec:
         env:
           - name:  MAXIMUM_UNICORN_CONSUMERS
             value: "0"
+          - name: SKIP_DB_INITIALIZATION
+            value: {{ default false .Values.env.common.skipInitialization | toString | quote  }}
           - name: ENABLE_RERECAPTCHA
             value: {{ default false .Values.env.frontend.enableRerecaptcha | toString | quote }}
           - name: BASE_MULTIPLIER_ACTIVE_TASKS
