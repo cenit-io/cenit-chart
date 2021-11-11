@@ -1,4 +1,4 @@
-{{- $drive := lookup "v1" "StorageClass" "" "" -}}
+{{- $drive := lookup "v1" "StorageClass" "default" "ebs-sc" -}}
 {{- if not $drive -}}
 {{- if .Values.services.csiDrive -}}
 kind: StorageClass
