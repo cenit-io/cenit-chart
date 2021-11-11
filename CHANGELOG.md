@@ -5,6 +5,13 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [1.8.3] - 2021-11-11
+
+### Fix
+
+- Split SKIP_DB_INITIALIZATION environment variable to frontend and backend
+- Add search criteria to check CSI-driver
+
 ## [1.8.2] - 2021-10-27
 
 ### Fix
@@ -109,6 +116,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Export service using LoadBalancer
 - Default values if not specified by user
 
+[1.8.3]: https://github.com/cenit-io/cenit-chart/compare/v1.8.2...v1.8.3
 [1.8.2]: https://github.com/cenit-io/cenit-chart/compare/v1.8.1...v1.8.2
 [1.8.1]: https://github.com/cenit-io/cenit-chart/compare/v1.8.0...v1.8.1
 [1.8.0]: https://github.com/cenit-io/cenit-chart/compare/v1.7.0...v1.8.0
