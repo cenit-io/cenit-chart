@@ -74,7 +74,6 @@ services:
 
 env:
   common:
-    skipInitialization:
     schedulerLookupInterval:
     unicornWorkers:
     awsS3Region:
@@ -105,10 +104,12 @@ env:
       enableStarttlsAuto:
 
   backend:
+    skipInitialization:
     maximumUniconrnConsumers:
     lookupSchedulerOff:
     loadDelayedMessagesOnStart:
   frontend:
+    skipInitialization:
     enableRerecaptcha:
     baseMultiplierActiveTasks:
     lookupSchedulerOff:
