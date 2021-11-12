@@ -59,6 +59,8 @@ spec:
             value: {{ default false .Values.env.backend.lookupSchedulerOff | toString | quote  }}
           - name: LOAD_DELAYED_MESSAGES_ON_START
             value: {{ default true .Values.env.backend.loadDelayedMessagesOnStart | toString | quote  }}
+          - name: BASE_MULTIPLIER_ACTIVE_TASKS
+            value: {{ default 50 .Values.env.backend.baseMultiplierActiveTasks | toString | quote }}
           {{- if .Values.env.common.awsS3Region }}
           - name: AWS_S3_REGION
             value: {{ .Values.env.common.awsS3Region | toString | quote  }}
@@ -190,8 +192,6 @@ spec:
             value: {{ default false .Values.env.frontend.skipInitialization | toString | quote  }}
           - name: ENABLE_RERECAPTCHA
             value: {{ default false .Values.env.frontend.enableRerecaptcha | toString | quote }}
-          - name: BASE_MULTIPLIER_ACTIVE_TASKS
-            value: {{ default 50 .Values.env.frontend.baseMultiplierActiveTasks | toString | quote }}
           - name: SCHEDULER_LOOKUP_INTERVAL
             value: {{ default 4 .Values.env.common.schedulerLookupInterval | toString | quote }}
           - name: UNICORN_WORKERS

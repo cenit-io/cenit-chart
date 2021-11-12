@@ -108,10 +108,10 @@ env:
     maximumUniconrnConsumers:
     lookupSchedulerOff:
     loadDelayedMessagesOnStart:
+    baseMultiplierActiveTasks:
   frontend:
     skipInitialization:
     enableRerecaptcha:
-    baseMultiplierActiveTasks:
     lookupSchedulerOff:
     delayTasks:
     unicornWorkers:
