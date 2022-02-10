@@ -34,7 +34,7 @@ spec:
             claimName: {{ template "cenit.fullname" . }}-mongo-pvc
       containers:
       - name: {{ template "cenit.fullname" . }}-mongodb
-        image: mongo:3.6
+        image: "mongo:{{ default "3.4" .Values.services.mongodb.version }}"
         resources:
           limits:
             memory: "{{ default 1 .Values.services.mongodb.resources.memory }}Gi"

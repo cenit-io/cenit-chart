@@ -59,6 +59,7 @@ services:
       cpu: 350
       memory: 1
   mongodb:
+    version:
     database:
     storage:  #Storage are expressed in Gb
     resources:
