@@ -46,6 +46,7 @@ resources:
 services:
   csiDrive: false
   rabbitmq:
+    deploy: true
     ampqUrl:
     resources:
       cpu: 350

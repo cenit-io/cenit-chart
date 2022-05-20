@@ -1,3 +1,4 @@
+{{- if .Values.services.rabbitmq.deploy }}
 {{- if not .Values.services.rabbitmq.ampqUrl }}
 
 apiVersion: v1
@@ -73,4 +74,5 @@ spec:
     port: 15672
     targetPort: 15672
 
+{{- end }}
 {{- end }}
