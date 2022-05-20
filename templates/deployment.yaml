@@ -47,6 +47,8 @@ spec:
             cpu: "{{ default 1000 .Values.resources.backend.cpu }}m"
         command: ["bundle", "exec", "unicorn", "-c", "config/unicorn.rb"]
         env:
+          - name: RAILS_LOG_TO_STDOUT
+            value: {{ default true .Values.env.common.railsLogsToSTDOUT | toString | quote  }}
           - name: SKIP_DB_INITIALIZATION
             value: {{ default false .Values.env.backend.skipInitialization | toString | quote  }}
           - name: SCHEDULER_LOOKUP_INTERVAL
@@ -186,6 +188,8 @@ spec:
             cpu: "{{ default 1000 .Values.resources.frontend.cpu }}m"
         command: ["bundle", "exec", "unicorn", "-c", "config/unicorn.rb"]
         env:
+          - name: RAILS_LOG_TO_STDOUT
+            value: {{ default true .Values.env.common.railsLogsToSTDOUT | toString | quote  }}
           - name:  MAXIMUM_UNICORN_CONSUMERS
             value: "0"
           - name: SKIP_DB_INITIALIZATION
