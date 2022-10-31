@@ -75,19 +75,6 @@ services:
       ssl:
 
 env:
-  common:
-    schedulerLookupInterval:
-    unicornWorkers:
-    awsS3Region:
-    awsS3BucketPrefix:
-    awsAccessKeyId:
-    awsSecretAccessKey:
-    defaultFileStore:
-    homePage:
-    docsUrl:
-    tenantCreationDisabled:
-    host:
-
     ## SMTP configuration
     ##
     ## -default values-
@@ -96,24 +83,43 @@ env:
     ## domain: cenitsaas.com
     ## authentication: plain
     ## enable_starttls_auto: true
-    smtpConfig:
-      address:
-      port:
-      domain:
-      userName:
-      password:
-      authentication:
-      enableStarttlsAuto:
-
   backend:
-    skipInitialization:
-    maximumUniconrnConsumers:
-    lookupSchedulerOff:
-    loadDelayedMessagesOnStart:
-    baseMultiplierActiveTasks:
+    home_page:
+    cenit_ui:
+    rails_logs_to_stdout:
+    skip_initialization:
+    scheduler_lookup_interval:
+    unicorn_workers:
+    maximum_uniconrn_consumers:
+
+    # Optionals Variables
+    lookup_scheduler_off:
+    base_multiplier_active_tasks:
+    oauth_token_end_point:
+
+    # AMAZON SIMPLE STORAGE SERVICE
+    aws_s3_region:
+    aws_s3_bucket_prefix:
+    aws_access_key_id:
+    aws_secret_access_key:
+    default_file_store:
+
+    # Notifications
+    notifier_email:
+    exception_recipients:
+
+    # EMAIL CONFIG
+    smtp_user_name:
+    smtp_password:
+    smtp_address:
+    smtp_port:
+    smtp_domain:
+    smtp_authentication:
+    smtp_ttls_auto:
+
   frontend:
-    skipInitialization:
-    enableRerecaptcha:
-    lookupSchedulerOff:
-    delayTasks:
-    unicornWorkers:
+    react_app_use_environment_config:
+    react_app_timeout_span:
+    react_app_app_id:
+    react_app_localhost:
+    react_app_cenit_host:

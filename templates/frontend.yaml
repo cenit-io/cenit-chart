@@ -1,0 +1,58 @@
+{{- if .Values.image.deploy }}
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: {{ template "cenit.fullname" . }}-deployment-frontend
+spec:
+  replicas: {{ default 1 .Values.image.frontend.replicas }}
+  selector:
+    matchLabels:
+      platform: {{ template "cenit.fullname" . }}-frontend
+  template:
+    metadata:
+      labels:
+        platform: {{ template "cenit.fullname" . }}-frontend
+    spec:
+      {{- if .Values.image.privateRepository.keys }}
+      imagePullSecrets:
+        {{- range .Values.image.privateRepository.keys }}
+        - name: {{ . }}
+        {{- end }}
+      {{- end }}
+      containers:
+      - name: {{ template "cenit.fullname" . }}-frontend
+      {{- if and .Values.image.customImage .Values.image.frontend.repository }}
+        image: {{ .Values.image.frontend.repository }}
+      {{- else }}
+        image: cenitio/frontend:{{ default "latest" .Values.image.frontend.repository }}
+      {{- end }}
+        imagePullPolicy: Always
+        resources:
+          limits:
+            memory: "{{ default 1 .Values.resources.frontend.memory }}Gi"
+            cpu: "{{ default 1000 .Values.resources.frontend.cpu }}m"
+        command: ["bundle", "exec", "unicorn", "-c", "config/unicorn.rb"]
+        env:
+          {{- if .Values.env.frontend.react_app_use_environment_config }}
+          - name: REACT_APP_USE_ENVIRONMENT_CONFIG
+            value: "true"
+          {{- end }}
+          {{- if .Values.env.frontend.react_app_timeout_span }}
+          - name: REACT_APP_TIMEOUT_SPAN
+            value: {{ .Values.env.frontend.react_app_timeout_span | toString | quote }}
+          {{- end }}
+          {{- if .Values.env.frontend.react_app_app_id }}
+          - name: REACT_APP_APP_ID
+            value: {{ .Values.env.frontend.react_app_app_id | toString | quote }}
+          {{- end }}
+          {{- if .Values.env.frontend.react_app_localhost }}
+          - name: REACT_APP_LOCALHOST
+            value: {{ .Values.env.frontend.react_app_localhost | toString | quote }}
+          {{- end }}
+          {{- if .Values.env.frontend.react_app_cenit_host }}
+          - name: REACT_APP_CENIT_HOST
+            value: {{ .Values.env.frontend.react_app_cenit_host | toString | quote }}
+          {{- end }}
+        ports:
+        - containerPort: 80
+{{- end }}
