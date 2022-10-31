@@ -24,7 +24,7 @@ spec:
       {{- if and .Values.image.customImage .Values.image.frontend.repository }}
         image: {{ .Values.image.frontend.repository }}
       {{- else }}
-        image: cenitio/frontend:{{ default "latest" .Values.image.frontend.repository }}
+        image: ghcr.io/cenit-io/ui:{{ default "latest" .Values.image.frontend.repository }}
       {{- end }}
         imagePullPolicy: Always
         resources:
