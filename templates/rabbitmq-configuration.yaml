@@ -37,7 +37,7 @@ spec:
             claimName: {{ template "cenit.fullname" . }}-rabbitmq-pvc
       containers:
       - name: {{ template "cenit.fullname" . }}-rabbitmq
-        image: rabbitmq:management
+        image: rabbitmq:management-alpine
         resources:
           limits:
             memory: "{{ default 1 .Values.services.rabbitmq.resources.memory }}Gi"
