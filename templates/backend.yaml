@@ -1,0 +1,167 @@
+{{- if .Values.image.deploy }}
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: {{ template "cenit.fullname" . }}-deployment-backend
+spec:
+  replicas: {{ default 1 .Values.image.backend.replicas }}
+  selector:
+    matchLabels:
+      platform: {{ template "cenit.fullname" . }}-backend
+  template:
+    metadata:
+      labels:
+        platform: {{ template "cenit.fullname" . }}-backend
+    spec:
+      initContainers:
+      - name: init-mongo
+        image: busybox:stable
+        command: ['sh', '-c', "until nc -z {{ template "cenit.fullname" . }}-mongo-svc 27017; do sleep 30; done;"]
+      {{- if not .Values.services.rabbitmq.ampqUrl }}
+      - name: init-rabbitmq
+        image: busybox:stable
+        command: ['sh', '-c', "until nc -z {{ template "cenit.fullname" . }}-rabbitmq-svc 5672; do sleep 30; done;"]
+      {{- end }}
+      {{- if not .Values.services.redis.host }}
+      - name: init-redis
+        image: busybox:stable
+        command: ['sh', '-c', "until nc -z {{ template "cenit.fullname" . }}-redis-svc 6379; do sleep 30; done;"]
+      {{- end }}
+      {{- if .Values.image.privateRepository.keys }}
+      imagePullSecrets:
+        {{- range .Values.image.privateRepository.keys }}
+        - name: {{ . }}
+        {{- end }}
+      {{- end }}
+      containers:
+      - name: {{ template "cenit.fullname" . }}-backend
+      {{- if and .Values.image.customImage .Values.image.backend.repository }}
+        image: {{ .Values.image.backend.repository }}
+      {{- else }}
+        image: ghcr.io/cenit-io/cenit:{{ default "latest" .Values.image.backend.repository }}
+      {{- end }}
+        imagePullPolicy: Always
+        resources:
+          limits:
+            memory: "{{ default 1 .Values.resources.backend.memory }}Gi"
+            cpu: "{{ default 1000 .Values.resources.backend.cpu }}m"
+        command: ["bundle", "exec", "unicorn", "-c", "config/unicorn.rb"]
+        env:
+          {{- if .Values.env.backend.home_page }}
+          - name: HOMEPAGE
+            value: {{ .Values.env.backend.home_page | toString | quote }}
+          {{- end }}
+          {{- if .Values.env.backend.cenit_ui }}
+          - name: CENIT_UI
+            value: {{ .Values.env.backend.cenit_ui | toString | quote }}
+          {{- end }}
+          - name: RAILS_LOG_TO_STDOUT
+            value: {{ default true .Values.env.backend.rails_logs_to_stdout | toString | quote  }}
+          {{- if .Values.env.backend.skip_initialization}}
+          - name: SKIP_DB_INITIALIZATION
+            value: "true"
+          {{- end }}
+          - name: SCHEDULER_LOOKUP_INTERVAL
+            value: {{ default 8 .Values.env.backend.scheduler_lookup_interval | toString | quote  }}
+          - name: UNICORN_WORKERS
+            value: {{ default 4 .Values.env.backend.unicorn_workers | toString | quote  }}
+          - name: MAXIMUM_UNICORN_CONSUMERS
+            value: {{ default 4 .Values.env.backend.maximum_uniconrn_consumers | toString | quote  }}
+          {{- if and .Values.services.redis.host .Values.services.redis.port .Values.services.redis.db .Values.services.redis.pwd | not }}
+          - name: REDIS_HOST
+            value: {{ template "cenit.fullname" . }}-redis-svc
+          {{- else }}
+          - name: REDIS_HOST
+            value: {{ .Values.services.redis.host | toString | quote }}
+          - name: REDIS_PORT
+            value: {{ .Values.services.redis.port | toString | quote }}
+          - name: REDIS_DB
+            value: {{ .Values.services.redis.db | toString | quote }}
+          - name: REDIS_PASSWORD
+            value: {{ .Values.services.redis.pwd | toString | quote }}
+          {{- end }}
+          - name: RABBITMQ_BIGWIG_TX_URL
+          {{- if .Values.services.rabbitmq.ampqUrl }}
+            value: {{ .Values.services.rabbitmq.ampqUrl }}
+          {{- else }}
+            value: "amqp://cenit_test:cenit_test@{{ template "cenit.fullname" . }}-rabbitmq-svc/vhost_cenit"
+          {{- end }}
+          - name: MONGODB_URI
+            value: mongodb://{{ template "cenit.fullname" . }}-mongo-svc/{{ default "cenit" .Values.services.mongodb.database }}
+          - name: TENANT_CREATION_DISABLED
+            value: {{ default false .Values.env.backend.tenantCreationDisabled | toString | quote }}
+
+          #Optionals Variables
+          {{- if .Values.env.backend.lookup_scheduler_off }}
+          - name: LOOKUP_SCHEDULER_OFF
+            value: "true"
+          {{- end }}
+          {{- if .Values.env.backend.base_multiplier_active_tasks }}
+          - name: BASE_MULTIPLIER_ACTIVE_TASKS
+            value: {{ default 500 .Values.env.backend.base_multiplier_active_tasks | toString | quote }}
+          {{- end }}
+          {{- if .Values.env.backend.oauth_token_end_point }}
+          - name: OAUTH_TOKEN_END_POINT
+            value: {{ .Values.env.backend.oauth_token_end_point | toString | quote  }}
+          {{- end }}
+
+          # AMAZON SIMPLE STORAGE SERVICE.
+          {{- if .Values.env.backend.aws_s3_region }}
+          - name: AWS_S3_REGION
+            value: {{ .Values.env.backend.aws_s3_region | toString | quote  }}
+          {{- end }}
+          {{- if .Values.env.backend.aws_s3_bucket_prefix }}
+          - name: AWS_S3_BUCKET_PREFIX
+            value: {{ .Values.env.backend.aws_s3_bucket_prefix | toString | quote  }}
+          {{- end }}
+          {{- if .Values.env.backend.aws_access_key_id }}
+          - name: AWS_ACCESS_KEY_ID
+            value: {{ .Values.env.backend.aws_access_key_id | toString | quote }}
+          {{- end }}
+          {{- if .Values.env.backend.aws_secret_access_key }}
+          - name: AWS_SECRET_ACCESS_KEY
+            value: {{ .Values.env.backend.aws_secret_access_key | toString | quote }}
+          {{- end }}
+          {{- if .Values.env.backend.default_file_store }}
+          - name: DEFAULT_FILE_STORE
+            value: {{ .Values.env.backend.default_file_store | toString | quote }}
+          {{- end }}
+
+          # Notifications
+          {{- if .Values.env.backend.notifier_email }}
+          - name: NOTIFIER_EMAIL
+            value: {{ .Values.env.backend.notifier_email | toString | quote }}
+          {{- end }}
+          {{- if .Values.env.backend.exception_recipients }}
+          - name: EXCEPTION_RECIPIENTS
+            value: {{ .Values.env.backend.exception_recipients | toString | quote }}
+          {{- end }}
+
+          #EMAIL CONFIG
+          {{- if and .Values.env.backend.smtp_user_name .Values.env.backend.smtp_password }}
+          - name: SMTP_USER_NAME
+            value: {{ .Values.env.backend.smtp_user_name | toString | quote }}
+          - name: SMTP_PASSWORD
+            value: {{ .Values.env.backend.smtp_password | toString | quote }}
+          {{- end }}
+          {{- if .Values.env.backend.smtp_address }}
+          - name: SMTP_ADDRESS
+            value: {{ .Values.env.backend.smtp_address | toString | quote }}
+          {{- end }}
+          {{- if .Values.env.backend.smtp_port }}
+          - name: SMTP_PORT
+            value: {{ .Values.env.backend.smtp_port | toString | quote }}
+          {{- end }}
+          {{- if .Values.env.backend.smtp_domain }}
+          - name: SMTP_DOMAIN
+            value: {{ .Values.env.backend.smtp_domain | toString | quote }}
+          {{- end }}
+          {{- if .Values.env.backend.smtp_authentication }}
+          - name: SMTP_AUTH_TYPE
+            value: {{ .Values.env.backend.smtp_authentication | toString | quote }}
+          {{- end }}
+          {{- if .Values.env.backend.smtp_ttls_auto }}
+          - name: SMTP_TTLS_AUTO
+            value: {{ .Values.env.backend.smtp_ttls_auto | toString | quote }}
+          {{- end }}
+{{- end }}
