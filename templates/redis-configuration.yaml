@@ -36,7 +36,7 @@ spec:
             claimName: {{ template "cenit.fullname" . }}-redis-pvc
       containers:
       - name: {{ template "cenit.fullname" . }}-redis
-        image: redis
+        image: redis:6-alpine
         resources:
           limits:
             memory: "{{ default 1 .Values.services.redis.resources.memory }}Gi"
